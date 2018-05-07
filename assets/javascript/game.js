@@ -1,4 +1,14 @@
 let player = null;
+let tileSize = 1766;
+let rowCount = 50;
+let colCount = 50;
+let imageNumTiles = 7;
+let context = null;
+let tileSetImage = null;
+
+let tilesetImage = new Image();
+tilesetImage.src = 'assets/tilesets/tileset.png';
+
 
 const character = function(name, focus, level, experience, health, mana, strength, endurance, intelligence, finesse, luck){
     this.name = name;
@@ -107,7 +117,7 @@ const createCharacter = function(name, classSelected){
                                classes[0].baseFinesse, //fin
                                classes[0].baseLuck); //luck
                             }
-    else if(selected == "Mage"){
+    else if(selected == "mage"){
         player = new character(name, 
                               "Mage", 
                                1, //level
@@ -120,7 +130,7 @@ const createCharacter = function(name, classSelected){
                                classes[1].baseFinesse, //fin
                                classes[1].baseLuck); //luck
                             }
-    else if(selected == "Thief"){
+    else if(selected == "thief"){
         player = new character(name, 
                               "Thief", 
                                1, //level
@@ -133,8 +143,52 @@ const createCharacter = function(name, classSelected){
                                classes[2].baseFinesse, //fin
                                classes[2].baseLuck); //luck
                             }
-
 }
+
+
+const createCanvas = function(){
+    let canvas = $("<canvas>");
+    canvas.attr("id", "play-area");
+    canvas.attr("height", rowCount * tileSize);
+    canvas.attr("width", colCount * tileSize), 
+    $("#main").append(canvas);
+}
+
+const clearCanvas = function(){
+    $("#play-area").remove();
+}
+
+const clearCharacterCreationMenu = function(){
+    $("#character-creation-box").remove();
+}
+
+const createTileMap = function(){
+    let canvas = document.getElementById("play-area");
+    context = canvas.getContext('2d');
+    draw(ground, layer1);
+}
+
+
+
+
+const draw = function(layer0, layer1) {
+    for (var row= 0; row < rowCount; row++) { 
+       for (var col = 0; col < colCount; col++) {
+          let tile = layer0[row][col];
+          let tileRow = (tile / imageNumTiles) | 0;
+          let tileCol = (tile % imageNumTiles) | 0;
+          context.drawImage(tilesetImage, (tileCol * tileSize), (tileRow * tileSize), tileSize, tileSize, (col * tileSize), (row * tileSize), tileSize, tileSize);
+           
+          tile = layer1[row][col];
+          tileRow = (tile / imageNumTiles) | 0;
+          tileCol = (tile % imageNumTiles) | 0;
+          context.drawImage(tilesetImage, (tileCol * tileSize), (tileRow * tileSize), tileSize, tileSize, (col * tileSize), (row * tileSize), tileSize, tileSize);
+       
+       
+        }
+    }
+ }
+
 
 $(document).ready(function(){
 
@@ -144,11 +198,10 @@ $(document).ready(function(){
         let nameSelection = $("#name-box").val();
         let classSelected = $("#class-select").val();
         let backgroundSelected = $("#background-select").val();
-        
         createCharacter(nameSelection, classSelected);
         console.log(player);
-        console.log("Character created!");
+        clearCharacterCreationMenu();
+        createCanvas();
+        createTileMap();
     })
-
-
 })
