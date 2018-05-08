@@ -1,13 +1,14 @@
 let player = null;
-let tileSize = 1766;
-let rowCount = 50;
-let colCount = 50;
-let imageNumTiles = 7;
+let tileSize = 16;
+let rowCount = 60;
+let colCount = 60;
+let imageNumTiles = 4;
 let context = null;
 let tileSetImage = null;
+let steps = 3;
 
 let tilesetImage = new Image();
-tilesetImage.src = 'assets/tilesets/tileset.png';
+tilesetImage.src = 'assets/tilesets/tilemap_32.png';
 
 
 const character = function(name, focus, level, experience, health, mana, strength, endurance, intelligence, finesse, luck){
@@ -162,35 +163,40 @@ const clearCharacterCreationMenu = function(){
     $("#character-creation-box").remove();
 }
 
-const createTileMap = function(){
-    let canvas = document.getElementById("play-area");
-    context = canvas.getContext('2d');
-    draw(ground, layer1);
-}
-
-
-
-
-const draw = function(layer0, layer1) {
+const draw = function(layer0) {
     for (var row= 0; row < rowCount; row++) { 
        for (var col = 0; col < colCount; col++) {
           let tile = layer0[row][col];
           let tileRow = (tile / imageNumTiles) | 0;
           let tileCol = (tile % imageNumTiles) | 0;
           context.drawImage(tilesetImage, (tileCol * tileSize), (tileRow * tileSize), tileSize, tileSize, (col * tileSize), (row * tileSize), tileSize, tileSize);
-           
-          tile = layer1[row][col];
-          tileRow = (tile / imageNumTiles) | 0;
-          tileCol = (tile % imageNumTiles) | 0;
-          context.drawImage(tilesetImage, (tileCol * tileSize), (tileRow * tileSize), tileSize, tileSize, (col * tileSize), (row * tileSize), tileSize, tileSize);
-
         }
     }
  }
 
+ const createTileMap = function(){
+    let canvas = document.getElementById("play-area");
+    context = canvas.getContext('2d');
+    draw(map);
+}
+
 
 $(document).ready(function(){
-
+    createCanvas();
+    generateBase();
+    for(i=0;i<steps;i++){
+        stepForward();
+        console.log("hey");
+    }
+    stepForward();
+    stepForward();
+    stepForward();
+    stepForward();
+    stepForward();
+    stepForward();
+    stepForward();
+    stepForward();
+    createTileMap();
     // characterCreationMenuCreation();
 
     $("body").on("click", "#submit-button-character", function(){
@@ -203,4 +209,7 @@ $(document).ready(function(){
         // createCanvas();
         // createTileMap();
     })
+
+
+
 })

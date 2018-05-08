@@ -1,10 +1,20 @@
 let map = [];
-let height = 20;
-let width = 20;
-let spawnChance = 40;
-let birthLimit = 2;
+let height = 60;
+let width = 60;
+let spawnChance = 45;
+let birthLimit = 5;
 let deathLimit = 3;
-let steps = 3;
+let overpopLimit = 15;
+
+// good settings
+// let birthLimit = 5;
+// let deathLimit = 3;
+// let overpopLimit = 15;
+
+// good settings
+// let birthLimit = 5;
+// let deathLimit = 3;
+// let overpopLimit = 8;
 
 
 const generatePercentage = function(){
@@ -45,12 +55,20 @@ const stepForward = function(){
                 if(count > deathLimit){
                     newRow.push(1);
                 }
+                else if(count > overpopLimit){
+                    newRow.push(0);
+                }
                 else{
                     newRow.push(0);
                 }
             }        
             else{
+                if(count > birthLimit){
+                    newRow.push(1);
+                }
+                else{
                 newRow.push(0);
+                }
             }
         }
         newArr.push(newRow);
@@ -70,6 +88,7 @@ const detectNeighbors = function(x, y){
             if(neighborY < 0 || neighborY > width || neighborX < 0 || neighborX >= height){
                 //console.log(i + ',' + j + " is outside ");
                 //count++ for map edge consideration
+                count++
             }
             else if(i == 0 && j== 0){
                 //console.log(i + ',' + j + " is the center point");
@@ -84,25 +103,16 @@ const detectNeighbors = function(x, y){
     return count;
 }
 
-const stepThrough = function(n){
-    let count = n;
-    for(i=0; i < count; i++){
-        // stepForward();
-        console.log("hey");
-    }
+const stepThrough = function(){
+    stepForward();
+    createTileMap();
 }
 
 const generateMap = function(){  
-    
-    console.log(steps);
     generateBase();
-    stepForward();
-    stepForward();
-    stepForward();
-
-    console.log("Final Result");
-    console.log(map);
+    createTileMap();
 }
+
 
 
 
