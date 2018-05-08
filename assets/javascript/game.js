@@ -183,8 +183,7 @@ const draw = function(layer0, layer1) {
           tileRow = (tile / imageNumTiles) | 0;
           tileCol = (tile % imageNumTiles) | 0;
           context.drawImage(tilesetImage, (tileCol * tileSize), (tileRow * tileSize), tileSize, tileSize, (col * tileSize), (row * tileSize), tileSize, tileSize);
-       
-       
+
         }
     }
  }
@@ -192,16 +191,16 @@ const draw = function(layer0, layer1) {
 
 $(document).ready(function(){
 
-    characterCreationMenuCreation();
+    // characterCreationMenuCreation();
 
     $("body").on("click", "#submit-button-character", function(){
         let nameSelection = $("#name-box").val();
         let classSelected = $("#class-select").val();
         let backgroundSelected = $("#background-select").val();
-        createCharacter(nameSelection, classSelected);
-        console.log(player);
-        clearCharacterCreationMenu();
-        createCanvas();
-        createTileMap();
+        // createCharacter(nameSelection, classSelected);
+        // console.log(player);
+        // clearCharacterCreationMenu();
+        // createCanvas();
+        // createTileMap();
     })
 })
