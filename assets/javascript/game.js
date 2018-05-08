@@ -11,7 +11,7 @@ let tilesetImage = new Image();
 tilesetImage.src = 'assets/tilesets/tilemap_32.png';
 
 let potionImage = new Image();
-potionImage.src = 'assets/tilesets/PotionTallRuby.png'
+potionImage.src = 'assets/tilesets/PotionTallRuby.PNG'
 
 
 const character = function(name, focus, level, experience, health, mana, strength, endurance, intelligence, finesse, luck){
