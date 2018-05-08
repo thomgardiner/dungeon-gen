@@ -1,25 +1,36 @@
 let map = [];
-let height = 60;
-let width = 60;
-let spawnChance = 45;
-let birthLimit = 5;
+let height = 50;
+let width = 50;
+let spawnChance = 50;
+let treasureChance = 3;
+let birthLimit = 4;
 let deathLimit = 3;
-let overpopLimit = 15;
+
 
 // good settings
 // let birthLimit = 5;
 // let deathLimit = 3;
-// let overpopLimit = 15;
 
 // good settings
 // let birthLimit = 5;
 // let deathLimit = 3;
-// let overpopLimit = 8;
+
+let treasureLayer = [];
 
 
 const generatePercentage = function(){
     let result = Math.floor(Math.random() * 100);
-    if(result > spawnChance){
+    if(result < spawnChance){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+const generateTreasurePercentage = function(){
+    let result = Math.floor(Math.random() * 1000);
+    if(result < treasureChance){
         return true;
     }
     else{
@@ -28,8 +39,9 @@ const generatePercentage = function(){
 }
 
 
+
 const generateBase = function(){
-for(i=0; i < height; i++){
+for(let i=0; i < height; i++){
     let newRow = [];
     for(j=0; j < width; j++){
             if(generatePercentage() == true){
@@ -43,9 +55,23 @@ for(i=0; i < height; i++){
     }
 }
 
+const generateTreasure = function(){
+    treasureLayer = map;
+    for(let i=0; i < height; i++){
+        for(j=0; j < width; j++){
+            if(treasureLayer[i][j] == 0){
+                if(generateTreasurePercentage() == true){
+                    treasureLayer[i][j] = 2;
+                }
+
+            }
+        }
+    }
+}
+
 const stepForward = function(){
     let newArr = [];
-    for(i=0;i < height; i++){
+    for(let i=0; i < height; i++){
         let newRow = [];
         for(j=0; j < width; j++){
             let count = detectNeighbors(i, j);
@@ -54,9 +80,6 @@ const stepForward = function(){
             if(index == 1){
                 if(count > deathLimit){
                     newRow.push(1);
-                }
-                else if(count > overpopLimit){
-                    newRow.push(0);
                 }
                 else{
                     newRow.push(0);
@@ -108,8 +131,14 @@ const stepThrough = function(){
     createTileMap();
 }
 
-const generateMap = function(){  
+const generateMap = function(n){  
+    createCanvas();
     generateBase();
+
+    for(let i=0;i<n;i++){
+        stepForward();
+        console.log("hey");
+    }
     createTileMap();
 }
 

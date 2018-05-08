@@ -1,14 +1,17 @@
 let player = null;
 let tileSize = 16;
-let rowCount = 60;
-let colCount = 60;
+let rowCount = 50;
+let colCount = 50;
 let imageNumTiles = 4;
 let context = null;
 let tileSetImage = null;
-let steps = 3;
+let steps = 5;
 
 let tilesetImage = new Image();
 tilesetImage.src = 'assets/tilesets/tilemap_32.png';
+
+let potionImage = new Image();
+potionImage.src = 'assets/tilesets/PotionTallRuby.png'
 
 
 const character = function(name, focus, level, experience, health, mana, strength, endurance, intelligence, finesse, luck){
@@ -163,13 +166,25 @@ const clearCharacterCreationMenu = function(){
     $("#character-creation-box").remove();
 }
 
-const draw = function(layer0) {
-    for (var row= 0; row < rowCount; row++) { 
-       for (var col = 0; col < colCount; col++) {
-          let tile = layer0[row][col];
+const draw = function(baseLayer) {
+    for (let row= 0; row < rowCount; row++) { 
+       for (let col = 0; col < colCount; col++) {
+          let tile = baseLayer[row][col];
           let tileRow = (tile / imageNumTiles) | 0;
           let tileCol = (tile % imageNumTiles) | 0;
           context.drawImage(tilesetImage, (tileCol * tileSize), (tileRow * tileSize), tileSize, tileSize, (col * tileSize), (row * tileSize), tileSize, tileSize);
+  
+        }
+    }
+ }
+
+ const drawTreasure = function(treasureLayer) {
+    for (let row= 0; row < rowCount; row++) { 
+       for (let col = 0; col < colCount; col++) {
+          let tile = treasureLayer[row][col];
+          if(tile == 2){
+          context.drawImage(potionImage, (col * tileSize), (row * tileSize), tileSize, tileSize);
+          }
         }
     }
  }
@@ -180,34 +195,59 @@ const draw = function(layer0) {
     draw(map);
 }
 
+const createGenerationButtons = function(){
+    let genMap = $("<div>");
+    genMap.addClass("button");
+    genMap.attr("id", "gen-map");
+    genMap.text("Generate new map");
+    $("#controls").append(genMap);
+
+    let stepF = $("<div>");
+    stepF.addClass("button");
+    stepF.attr("id", "step-forward");
+    stepF.text("Step forward");
+    $("#controls").append(stepF);
+
+    let genTreasure = $("<div>");
+    genTreasure.addClass("button");
+    genTreasure.attr("id", "gen-treasure");
+    genTreasure.text("Generate treasure");
+    $("#controls").append(genTreasure);
+
+}
+
+const clear = function(){
+    map = [];
+
+}
 
 $(document).ready(function(){
-    createCanvas();
-    generateBase();
-    for(i=0;i<steps;i++){
-        stepForward();
-        console.log("hey");
-    }
-    stepForward();
-    stepForward();
-    stepForward();
-    stepForward();
-    stepForward();
-    stepForward();
-    stepForward();
-    stepForward();
-    createTileMap();
-    // characterCreationMenuCreation();
+    createGenerationButtons();
+    generateMap(0);
+
+
+    $("body").on("click", "#gen-map", function(){
+        $("#play-area").remove();
+        clear();
+        generateMap(0);
+    })
+
+    $("body").on("click", "#step-forward", function(){
+        stepThrough();
+    })
+
+    $("body").on("click", "#gen-treasure", function(){
+        generateTreasure();
+        drawTreasure(treasureLayer);
+
+    })
+
 
     $("body").on("click", "#submit-button-character", function(){
         let nameSelection = $("#name-box").val();
         let classSelected = $("#class-select").val();
         let backgroundSelected = $("#background-select").val();
-        // createCharacter(nameSelection, classSelected);
-        // console.log(player);
-        // clearCharacterCreationMenu();
-        // createCanvas();
-        // createTileMap();
+        createCharacter(nameSelection, classSelected);
     })
 
 
