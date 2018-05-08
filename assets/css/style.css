@@ -28,3 +28,22 @@
     cursor: pointer;
     margin-left: 10px;
 }
+
+
+#height-input{
+    width: 30px;
+    margin-left: 5px;
+}
+
+#width-input{
+    width: 30px;
+    margin-left: 5px;
+}
+
+#height{
+    margin-left: 10px;
+}
+
+#width{
+    margin-left: 10px
+}
