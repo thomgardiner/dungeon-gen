@@ -3,22 +3,14 @@ let height = rowCount;
 let width = colCount;
 let spawnChance = 50;
 let treasureChance = 3;
-let birthLimit = 4;
-let deathLimit = 3;
+let birthLimit = 5;
+let deathLimit = 2;
 let treasureLayer = [];
 let roomLayer = [];
 let roomKey = [];
+let lastPos = [];
+let key = [];
 
-
-//generate base map
-//cellular automata x5++ for smoothest results
-//determine rooms
-//
-//
-//
-//
-//
-//
 const generatePercentage = function(){
     let result = Math.floor(Math.random() * 100);
     if(result < spawnChance){
@@ -38,8 +30,6 @@ const generateTreasurePercentage = function(){
         return false;
     }
 }
-
-
 
 const generateBase = function(){
 for(let i=0; i < height; i++){
@@ -115,6 +105,12 @@ const flood = function(x, y, replacement){
     createTileMap();
 }
 
+const flood1 = function(x, y, replacement){
+    key = [];
+    floodFill(x, y, replacement);
+    lastPos.push(key[0]);
+}
+
 const floodFill = function(x, y, replacement){
     if(x < 0 || x > height-1 || y < 0 || y > width-1){
         return;
@@ -131,6 +127,7 @@ const floodFill = function(x, y, replacement){
         floodFill(x+1, y, replacement);
         floodFill(x, y-1, replacement);
         floodFill(x, y+1, replacement);
+        key.push({x: x, y: y});
         return;
     }
 }
@@ -162,42 +159,38 @@ const detectNeighbors = function(x, y){
     return count;
 }
 
-const detectRooms = function(x, y){
-    let count = 0;
-    let map = 0;
 
-    for(let i=-1; i<2; i++){
-        for(let j=-1; j<2; j++){
-            let neighborX = x+i;
-            let neighborY = y+j;
-            //console.log("this is x: + "  + neighborX + " y: " + neighborY);
-            
-            if(neighborY < 0 || neighborY > width || neighborX < 0 || neighborX >= height){
-                //console.log(i + ',' + j + " is outside ")
-                
-            }
-            else if(i == 0 && j== 0){
-                //console.log(i + ',' + j + " is the center point");
-            }
-            else if(map[neighborX][neighborY] == 1){
-                //console.log(i + ',' + j + " is " + map[neighborX][neighborY]);
-                count++
-            }
+const detect = function(){
+    roomKey = map;
+    let keyPair = {x: 0, y: 0};
+    let roomCount = 2;
+    for(let i=0; i < height; i++){
+        for(let j=0; j < width; j++){
+            if(map[i][j] == 0){
+                if(roomCount > 2){
+                    //carveTunnel(i, j, roomCount, roomCount-1);
+                    //floodFill(i, j, roomCount);
+                    flood1(i, j, roomCount);
+                    roomCount++;
+                }
+                else{
+                    //floodFill(i, j, roomCount);
+                    flood1(i, j, roomCount);
+                    roomCount++;
+                }
+            };
         }
     }
-    
-    return count;
+    console.log("There are " + (roomCount-2) + " different rooms.")
+    return roomKey;
 }
 
-const detect = function(x, y){
-    let roomKey = map;
-    let roomCount = 1;
-    
+const carveTunnel = function(x, y, currentRoom, targetRoom){
+    let q = [];
 
 
 
 }
-
 
 const stepThroughWall = function(){
     fillWall(height, width);
