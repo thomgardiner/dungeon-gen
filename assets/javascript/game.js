@@ -230,7 +230,6 @@ $(document).ready(function(){
     createGenerationButtons();
     generateMap(0);
 
-
     $("body").on("click", "#gen-map", function(){
         $("#play-area").remove();
         clear();
