@@ -214,10 +214,10 @@ const createGenerationButtons = function(){
     genTreasure.text("Generate treasure");
     $("#controls").append(genTreasure);
 
-    let sizeInputs = $("<div>");
-    sizeInputs.addClass("inputs");
-    sizeInputs.html('<span id="height">Height<input id="height-input"></span><span id="width">Width<input id="width-input"></span>')
-    $("#controls").append(sizeInputs);
+//     let sizeInputs = $("<div>");
+//     sizeInputs.addClass("inputs");
+//     sizeInputs.html('<span id="height">Height<input id="height-input"></span><span id="width">Width<input id="width-input"></span>')
+//     $("#controls").append(sizeInputs);
 
 }
 
